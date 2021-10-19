@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: saju
-        image: sajupalja/saju:dev
+        image: drache0311/saju:dev
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
