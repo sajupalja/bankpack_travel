@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saju
+  labels:
+    app: saju
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: saju
+  template:
+    metadata:
+      labels:
+        app: saju
+    spec:
+      containers:
+      - name: saju
+        image: sajupalja/saju:dev
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: saju-config
+              key: DB_SERVER
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: saju-config
+              key: DB_PORT
+        - name: DB_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: saju-config
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: saju-config
+              key: DB_PASSWORD
+        - name: SERVLET_CONTEXT_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: saju-config
+              key: SERVLET_CONTEXT_PATH
