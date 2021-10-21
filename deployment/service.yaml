@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: bankpack-spending-svc
+  name: bankpack-travel-svc
   labels:
-    app: bankpack-spending-svc
+    app: bankpack-travel-svc
 spec:
   type: NodePort
   ports:
   - port: 8080
     targetPort: 8080
   selector:
-    app: bankpack-spending-svc
+    app: bankpack-travel-svc
