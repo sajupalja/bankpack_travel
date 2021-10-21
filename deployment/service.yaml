@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: saju
+  name: bankpack-spending-svc
   labels:
-    app: saju
+    app: bankpack-spending-svc
 spec:
   type: NodePort
   ports:
   - port: 8080
     targetPort: 8080
   selector:
-    app: saju
+    app: bankpack-spending-svc

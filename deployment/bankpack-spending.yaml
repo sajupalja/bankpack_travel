@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: saju
+  name: bankpack-spending
   labels:
-    app: saju
+    app: bankpack-spending
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: saju
+      app: bankpack-spending-svc
   template:
     metadata:
       labels:
-        app: saju
+        app: bankpack-spending-svc
     spec:
       containers:
-      - name: saju
-        image: drache0311/saju:dev
+      - name: bankpack-spending
+        image: drache0311/bankpack-spending:dev
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -24,25 +24,25 @@ spec:
         - name: DB_SERVER
           valueFrom:
             configMapKeyRef:
-              name: saju-config
+              name: bankpack-spending--config
               key: DB_SERVER
         - name: DB_PORT
           valueFrom:
             configMapKeyRef:
-              name: saju-config
+              name: bankpack-spending--config
               key: DB_PORT
         - name: DB_USERNAME
           valueFrom:
             configMapKeyRef:
-              name: saju-config
+              name: bankpack-spending--config
               key: DB_USERNAME
         - name: DB_PASSWORD
           valueFrom:
             configMapKeyRef:
-              name: saju-config
+              name: bankpack-spending--config
               key: DB_PASSWORD
         - name: SERVLET_CONTEXT_PATH
           valueFrom:
             configMapKeyRef:
-              name: saju-config
+              name: bankpack-spending--config
               key: SERVLET_CONTEXT_PATH

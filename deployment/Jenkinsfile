@@ -44,7 +44,7 @@ podTemplate(
 			// Javascript based on Node.js
 	 		//git branch: 'main', url: 'https://github.com/happykube/hellonode.git'
 			// Java based on Spring Boot, branch : msa
-			git branch: 'main', url: 'https://github.com/sajupalja/backpack_back.git'
+			git branch: 'main', url: 'https://github.com/sajupalja/bankpack_spending.git'
 		} 
 
 		//-- 환경변수 파일 읽어서 변수값 셋팅 
@@ -131,7 +131,7 @@ podTemplate(
 					sh "kubectl apply -n ${namespace} -f ${deployment}"
 					sh "sleep 5"
 					sh "kubectl apply -n ${namespace} -f ${service}"
-					sh "kubectl apply -n ${namespace} -f ${ingress}"
+					//sh "kubectl apply -n ${namespace} -f ${ingress}"
 				}
 			}
 
