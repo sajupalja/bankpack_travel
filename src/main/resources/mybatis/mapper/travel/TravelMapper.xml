@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.microservices.dao.TravelDao">
+	<select id="searchAllTravel" resultType="com.demo.microservices.model.TravelVO">
+		select trvl_id,
+			   trvl_name, 
+			   trvl_start_dt, 
+			   trvl_end_dt, 
+			   img_url, 
+			   cmpn_cnt, 
+			   trvl_pd, 
+			   total_pay_amt, 
+			   cmpn_type, 
+			   trvl_main_fctr, 
+			   clstr_label, 
+			   use_yn, 
+			   budget_amt, 
+			   total_room_rate,
+			   total_trff_rate, 
+			   total_act_rate, 
+			   total_etc_rate, 
+			   tb1.cntry_name, 
+			   tb1.city_name, 
+			   usr_info.user_name
+		from trvl_info
+		join (select ctr.cntry_id, 
+					 ctr.cntry_name, 
+					 ct.city_id, 
+					 ct.city_name
+				from cntry_info ctr
+				join city_info ct
+				on ctr.cntry_id = ct.cntry_id) as tb1
+		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
+		join usr_info
+		on trvl_info.user_id = usr_info.user_id
+	</select>
+	
+	<select id="searchTravel" parameterType= "string" resultType="com.demo.microservices.model.TravelVO">
+		select trvl_id,
+			   trvl_name, 
+			   trvl_start_dt, 
+			   trvl_end_dt, 
+			   img_url, 
+			   cmpn_cnt, 
+			   trvl_pd, 
+			   total_pay_amt, 
+			   cmpn_type, 
+			   trvl_main_fctr, 
+			   clstr_label, 
+			   use_yn, 
+			   budget_amt, 
+			   total_room_rate,
+			   total_trff_rate, 
+			   total_act_rate, 
+			   total_etc_rate, 
+			   tb1.cntry_name, 
+			   tb1.city_name, 
+			   usr_info.user_name
+		from trvl_info
+		join (select ctr.cntry_id, 
+					 ctr.cntry_name, 
+					 ct.city_id, 
+					 ct.city_name
+				from cntry_info ctr
+				join city_info ct
+				on ctr.cntry_id = ct.cntry_id) as tb1
+		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
+		join usr_info
+		on trvl_info.user_id = usr_info.user_id
+		where trvl_name like concat(‘%’, #{keyword}, ‘%’)
+	</select>
+	
+	<select id="searchTravel" parameterType= "com.demo.microservices.model.TravelVO" resultType="com.demo.microservices.model.TravelVO">
+		select trvl_id,
+			   trvl_name, 
+			   trvl_start_dt, 
+			   trvl_end_dt, 
+			   img_url, 
+			   cmpn_cnt, 
+			   trvl_pd, 
+			   total_pay_amt, 
+			   cmpn_type,
+			   trvl_main_fctr, 
+			   clstr_label, 
+			   use_yn, 
+			   budget_amt, 
+			   total_room_rate,
+			   total_trff_rate, 
+			   total_act_rate, 
+			   total_etc_rate, 
+			   tb1.cntry_name, 
+			   tb1.city_name, 
+			   usr_info.user_name
+		from trvl_info
+		join (select ctr.cntry_id, 
+					 ctr.cntry_name, 
+					 ct.city_id, 
+					 ct.city_name
+				from cntry_info ctr
+				join city_info ct
+				on ctr.cntry_id = ct.cntry_id) as tb1
+		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
+		join usr_info
+		on trvl_info.user_id = usr_info.user_id	  
+	</select>
+	
+	<select id="searchTravel" parameterType= "Integer" resultType="com.demo.microservices.model.TravelVO"> 
+		select trvl_id,
+			   trvl_name,
+			   trvl_start_dt,
+			   trvl_end_dt,
+			   img_url,
+			   cmpn_cnt,
+			   trvl_pd,
+			   total_pay_amt,
+			   cmpn_type,
+			   trvl_main_fctr,
+			   clstr_label,
+			   use_yn,
+			   budget_amt,
+			   total_room_rate,
+			   total_trff_rate,
+			   total_act_rate,
+			   total_etc_rate,
+			   tb1.cntry_name,
+			   tb1.city_name,
+			   usr_info.user_name
+		from trvl_info
+		join (select ctr.cntry_id, 
+					 ctr.cntry_name, 
+					 ct.city_id, 
+					 ct.city_name
+				from cntry_info ctr
+				join city_info ct
+				on ctr.cntry_id = ct.cntry_id) as tb1
+		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
+		join usr_info
+		on trvl_info.user_id = usr_info.user_id
+		where trvl_id = #{trvlId}
+	</select>
+</mapper>

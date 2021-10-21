@@ -2,8 +2,6 @@ package com.demo.microservices.controller;
 
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.microservices.dao.TravelDao;
@@ -80,13 +77,16 @@ public class TravelController {
 		return new ResponseEntity<List<TravelVO>>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value="여행지 선택 API 입니다.") 
+	@ApiOperation(value="여행지 게시글 선택 API 입니다.") 
 	@GetMapping(value="/travel/reviews/{trvlId}")
 	public ResponseEntity<TravelVO> selectTravel(@PathVariable int trvlId) {
 		TravelVO travel = null;
+		List<TravelReviewVO> travelRevw = null;
 		try {
 			log.info("Start");
 			travel = travelDao.selectTravel(trvlId);
+			travelRevw = travelDao.selectTravelRevw(trvlId);
+			travel.setTrvVO(travelRevw);
 		} catch (Exception e) {
 			log.info("ERROR", e);
 			throw new RuntimeException(e);
@@ -95,7 +95,7 @@ public class TravelController {
 		return new ResponseEntity<TravelVO>(travel, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value="여행지 작성 API 입니다.")
+	@ApiOperation(value="여행지 게시글 작성 API 입니다.")
 	@PostMapping(value="/travel/reviews")
 	public ResponseEntity<TravelVO> insertTravel(@RequestBody TravelVO t) {
 		TravelVO travel = null;
@@ -110,7 +110,7 @@ public class TravelController {
 		return new ResponseEntity<TravelVO>(travel, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value="여행지 수정 API 입니다.")
+	@ApiOperation(value="여행지 게시글 수정 API 입니다.")
 	@PutMapping(value="/travel/reviews/{trvlId}")
 	public ResponseEntity<TravelVO> updateTravel(@RequestBody TravelVO t) {
 		TravelVO travel = null;
@@ -125,7 +125,7 @@ public class TravelController {
 		return new ResponseEntity<TravelVO>(travel, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value="여행지 삭제 API 입니다.")
+	@ApiOperation(value="여행지 게시글 삭제 API 입니다.")
 	@DeleteMapping(value="/travel/reviews/{trvlId}")
 	public ResponseEntity<Integer> deleteTravel(@PathVariable int trvlId) {
 		int result = -1;
@@ -137,6 +137,51 @@ public class TravelController {
 			throw new RuntimeException(e);
 		}
 		log.info("delete travel id ; " + result);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value="여행지 후기 작성 API 입니다.")
+	@PostMapping(value="/travel/reviews/review-entry")
+	public ResponseEntity<TravelReviewVO> insertTravelRevw(@RequestBody TravelReviewVO tr) {
+		TravelReviewVO travelRevw = null;
+		try {
+			log.info("Start");
+			travelRevw = travelDao.insertTravelRevw(tr);
+		} catch (Exception e) {
+			log.info("ERROR", e);
+			throw new RuntimeException(e);
+		}
+		log.info("create travel review id : " + travelRevw.getTrvlId());
+		return new ResponseEntity<TravelReviewVO>(travelRevw, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value="여행지 후기 수정 API 입니다.")
+	@PutMapping(value="/travel/reviews/review-entry/{trvlId}")
+	public ResponseEntity<TravelReviewVO> updateTravelRevw(@RequestBody TravelReviewVO tr) {
+		TravelReviewVO travelRevw = null;
+		try {
+			log.info("Start");
+			travelRevw = travelDao.updateTravelRevw(tr);
+		} catch (Exception e) {
+			log.info("ERROR", e);
+			throw new RuntimeException(e);
+		}
+		log.info("update travel review id : " + travelRevw.getTrvlId());
+		return new ResponseEntity<TravelReviewVO>(travelRevw, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value="여행지 후기 삭제 API 입니다.")
+	@DeleteMapping(value="/travel/reviews/review-entry/{trvlId}")
+	public ResponseEntity<Integer> deleteTravelRevw(@PathVariable int trvlRevwId) {
+		int result = -1;
+		try {
+			log.info("Start");
+			result = travelDao.deleteTravelRevw(trvlRevwId);
+		} catch (Exception e) {
+			log.info("ERROR", e);
+			throw new RuntimeException(e);
+		}
+		log.info("delete travel review id ; " + result);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }
