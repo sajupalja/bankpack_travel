@@ -9,7 +9,7 @@ spring:
     
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_SERVER:169.56.174.138}:${DB_PORT:30235}/${DB_NAME:bankpack}?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://${DB_SERVER:169.56.174.138}:${DB_PORT:30235}/${DB_NAME:bankpack}?allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8
     username: ${DB_USERNAME:saju}
     password: ${DB_PASSWORD:saju}
     hikari:
