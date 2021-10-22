@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: saju
+  name: bankpack-travel-svc
   labels:
-    app: saju
+    app: bankpack-travel-svc
 spec:
   type: NodePort
   ports:
-  - port: 8080
+  - port: 80
     targetPort: 8080
   selector:
-    app: saju
+    app: bankpack-travel-svc
