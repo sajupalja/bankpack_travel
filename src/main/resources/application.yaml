@@ -1,12 +1,12 @@
-server:
+server:  
   port: ${PORT:8080}
   servlet:
-    context-path: ${SERVLET_CONTEXT_PATH:/}
+    context-path: ${SERVLET_CONTEXT_PATH:/travel}
 
-spring:
+spring: 
   application:
     name: sample-service
-
+    
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_SERVER:169.56.174.138}:${DB_PORT:30235}/${DB_NAME:bankpack}?allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8
@@ -17,13 +17,13 @@ spring:
       validation-timeout: 1000
       maximum-pool-size: 30
       minimum-idle: 2
-      connection-test-query: SELECT 1
+      connection-test-query: SELECT 1    
 
 #MyBatis
 mybatis:
-  mapper-locations: classpath:mybatis/mapper/**/*.xml
-  configuration:
-    map-underscore-to-camel-case: true
+    mapper-locations: classpath:mybatis/mapper/**/*.xml
+    configuration:
+        map-underscore-to-camel-case: true  
 
 garage:
   product:
