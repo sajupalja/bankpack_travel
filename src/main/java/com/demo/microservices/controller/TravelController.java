@@ -207,4 +207,10 @@ public class TravelController {
 		}
 		return new ResponseEntity<Integer>(trvlRevwId, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value="나라/도시 선택 API 입니다.")
+	@GetMapping(value="/travel/cntry={cntry_id}&city={city_id}")
+	public ResponseEntity<List<TravelVO>> searchCnC(@PathVariable int cntry_id, @PathVariable int city_id) {
+		return null; 
+	}
 }

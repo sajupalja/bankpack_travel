@@ -132,7 +132,12 @@
 			   total_etc_rate,
 			   tb1.cntry_name,
 			   tb1.city_name,
-			   usr_info.user_name
+			   usr_info.user_name,
+			   (select sum(pay_amt) from trvl_pay_info where trvl_id = trvl_info.trvl_id and pay_type = "1") as "totalRoomPrice",
+			   (select sum(pay_amt) from trvl_pay_info where trvl_id = trvl_info.trvl_id and pay_type = "2") as "totalFoodPrice",
+			   (select sum(pay_amt) from trvl_pay_info where trvl_id = trvl_info.trvl_id and pay_type = "3") as "totalTrffPrice",
+			   (select sum(pay_amt) from trvl_pay_info where trvl_id = trvl_info.trvl_id and pay_type = "4") as "totalActPrice",
+			   (select sum(pay_amt) from trvl_pay_info where trvl_id = trvl_info.trvl_id and pay_type = "5") as "totalEtcPrice"
 		from trvl_info
 		join (select ctr.cntry_id, 
 					 ctr.cntry_name, 

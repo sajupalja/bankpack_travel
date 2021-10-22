@@ -35,6 +35,11 @@ public class TravelVO {
 	private float totalTrffRate; // 총 교통 비율 
 	private float totalActRate; // 총 엑티비티 비율
 	private float totalEtcRate; // 총 기타 비율
+	private long totalRoomPrice; // 총 숙소 금액 
+	private long totalFoodPrice; // 총 식비 금액
+	private long totalTrffPrice; // 총 교통 금액 
+	private long totalActPrice; // 총 엑티비티 금액
+	private long totalEtcPrice; // 총 기타 금액
 	private int inputId; // 작성자 
 	private Date inputDt; // 최초 작성일자
 	private int modifyId; // 수정자 
