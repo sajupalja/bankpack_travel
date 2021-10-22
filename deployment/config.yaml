@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: bankpack-travel-config
 data:
-  SERVLET_CONTEXT_PATH: "/"
+  SERVLET_CONTEXT_PATH: "/travel"
 # MYSQL DB
   DB_SERVER: mysql.mysql
   DB_PORT: "3306"
