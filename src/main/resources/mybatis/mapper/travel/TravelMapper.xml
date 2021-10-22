@@ -6,6 +6,8 @@
 			   trvl_name, 
 			   trvl_start_dt, 
 			   trvl_end_dt, 
+			   tb1.cntry_id,
+			   tb1.city_id,
 			   img_url, 
 			   cmpn_cnt, 
 			   trvl_pd, 
@@ -40,6 +42,8 @@
 			   trvl_name, 
 			   trvl_start_dt, 
 			   trvl_end_dt, 
+			   tb1.cntry_id,
+			   tb1.city_id,
 			   img_url, 
 			   cmpn_cnt, 
 			   trvl_pd, 
@@ -67,14 +71,16 @@
 		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
 		join usr_info
 		on trvl_info.user_id = usr_info.user_id
-		where trvl_name like concat(‘%’, #{keyword}, ‘%’)
+		where trvl_name like concat('%', #{keyword}, '%')
 	</select>
 	
-	<select id="searchTravel" parameterType= "com.demo.microservices.model.TravelVO" resultType="com.demo.microservices.model.TravelVO">
+	<select id="searchDetailTravel" parameterType= "com.demo.microservices.model.TravelVO" resultType="com.demo.microservices.model.TravelVO">
 		select trvl_id,
 			   trvl_name, 
 			   trvl_start_dt, 
-			   trvl_end_dt, 
+			   trvl_end_dt,
+			   tb1.cntry_id,
+			   tb1.city_id, 
 			   img_url, 
 			   cmpn_cnt, 
 			   trvl_pd, 
@@ -104,11 +110,13 @@
 		on trvl_info.user_id = usr_info.user_id	  
 	</select>
 	
-	<select id="searchTravel" parameterType= "Integer" resultType="com.demo.microservices.model.TravelVO"> 
+	<select id="selectTravel" parameterType= "Integer" resultType="com.demo.microservices.model.TravelVO"> 
 		select trvl_id,
 			   trvl_name,
 			   trvl_start_dt,
 			   trvl_end_dt,
+			   tb1.cntry_id,
+			   tb1.city_id,
 			   img_url,
 			   cmpn_cnt,
 			   trvl_pd,
@@ -138,4 +146,151 @@
 		on trvl_info.user_id = usr_info.user_id
 		where trvl_id = #{trvlId}
 	</select>
+	
+	<insert id="insertTravel" parameterType="com.demo.microservices.model.TravelVO">
+		insert into trvl_info(
+		   trvl_name,
+		   trvl_start_dt,
+		   trvl_end_dt,
+		   cntry_id,
+		   city_id,
+		   img_url,
+		   cmpn_cnt,
+		   trvl_pd,
+		   total_pay_amt,
+		   cmpn_type, 
+		   trvl_main_fctr, 
+		   clstr_label, 
+		   use_yn, 
+		   user_id,
+		   budget_amt, 
+		   total_room_rate,
+		   total_trff_rate, 
+		   total_act_rate, 
+		   total_etc_rate,
+		   input_id,
+		   input_dt,
+		   modify_id,
+		   modify_dt
+		) values (
+		   #{trvlName},
+		   #{trvlStartDt},
+		   #{trvlEndDt},
+		   #{cntryId},
+		   #{cityId},
+		   #{imgUrl},
+		   #{cmpnCnt},
+		   #{trvlPd},
+		   #{totalPayAmt},
+		   #{cmpnType}, 
+		   #{trvlMainFctr}, 
+		   #{clstrLabel}, 
+		   #{useYn}, 
+		   #{userId},
+		   #{budgetAmt}, 
+		   #{totalRoomRate},
+		   #{totalTrffRate}, 
+		   #{totalActRate}, 
+		   #{totalEtcRate},
+		   #{inputId},
+		   #{inputDt},
+		   #{modifyId},
+		   #{modifyDt}
+		)
+		<selectKey keyProperty="trvlId" resultType="Integer" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
+	</insert>
+	
+	<update id="updateTravel" parameterType="com.demo.microservices.model.TravelVO">
+		update trvl_info 
+		set trvl_name = #{trvlName},
+		   trvl_start_dt = #{trvlStartDt},
+		   trvl_end_dt = #{trvlEndDt},
+		   cntry_id = #{cntryId},
+		   city_id = #{cityId},
+		   img_url = #{imgUrl},
+		   cmpn_cnt = #{cmpnCnt},
+		   trvl_pd = #{trvlPd},
+		   cmpn_type = #{cmpnType}, 
+		   trvl_main_fctr = #{trvlMainFctr}, 
+		   use_yn = #{useYn}, 
+		   budget_amt = #{budgetAmt}, 
+		   modify_id = #{modifyId},
+		   modify_dt = #{modifyDt}
+		where trvl_id = #{trvlId}
+	</update>
+	
+	<delete id="deleteTravel" parameterType="Integer">
+		delete from trvl_info
+		where trvl_id = #{trvlId};
+		
+		delete from trvl_revw_info
+		where trvl_id = #{trvlId}
+	</delete>
+	
+	<select id="selectAllTravelRevw" parameterType="Integer" resultType="com.demo.microservices.model.TravelReviewVO">
+		select trvl_revw_id,
+			   trvl_id,
+			   write_date, 
+			   revw_text,
+			   revw_order,
+			   trvl_dt
+		from trvl_revw_info
+		where trvl_id = #{trvlId}
+	</select>
+	
+	<select id="selectTravelRevw" parameterType="Integer" resultType="com.demo.microservices.model.TravelReviewVO">
+		select trvl_revw_id,
+			   trvl_id,
+			   write_date, 
+			   revw_text,
+			   revw_order,
+			   trvl_dt
+		from trvl_revw_info
+		where trvl_revw_id = #{trvlRevwId}  
+	</select>
+	
+	<insert id="insertTravelRevw" parameterType="com.demo.microservices.model.TravelReviewVO" >
+		insert into trvl_revw_info(
+			trvl_id,
+		 	write_date, 
+		 	revw_text,
+			revw_order,
+			trvl_dt,
+			input_id, 
+			input_dt,
+			modify_id,
+			modify_dt
+		) values (
+			#{trvlId},
+		 	#{writeDate}, 
+		 	#{revwText},
+			#{revwOrder},
+			#{trvlDt},
+			#{inputId}, 
+			#{inputDt},
+			#{modifyId},
+			#{modifyDt}
+		)
+		<selectKey keyProperty="trvlRevwId" resultType="Integer" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
+	</insert>
+	
+	<update id="updateTravelRevw" parameterType="com.demo.microservices.model.TravelReviewVO">
+		update trvl_revw_info 
+		set write_date = #{writeDate}, 
+		 	revw_text = #{revwText},
+			revw_order = #{revwOrder},
+			trvl_dt = #{trvlDt},
+			modify_id = #{modifyId},
+			modify_dt = #{modifyDt}
+		where trvl_revw_id = #{trvlRevwId} and trvl_id = #{trvlId}
+	</update>
+	
+	<delete id="deleteTravelRevw" parameterType="Integer">
+		delete from trvl_revw_info
+		where trvl_revw_id = #{trvlRevwId}
+	</delete>
 </mapper>

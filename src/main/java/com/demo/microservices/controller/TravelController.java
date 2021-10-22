@@ -47,7 +47,7 @@ public class TravelController {
 		return new ResponseEntity<List<TravelVO>> (list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value="여행지 키워드 검색 API 입니다.")
+	@ApiOperation(value="여행지 키워드 검색 API 입니다. 현재 제목 검색만 가능")
 	@GetMapping(value="/travel/reviews/detail/{keyword}")
 	public ResponseEntity<List<TravelVO>> searchTravel(@PathVariable String keyword) {
 		List<TravelVO> list = null;
@@ -62,13 +62,13 @@ public class TravelController {
 		return new ResponseEntity<List<TravelVO>>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value="여행지 상세 검색 API 입니다.")
+	@ApiOperation(value="여행지 상세 검색 API 입니다. 현재 사용X")
 	@GetMapping(value="/travel/reviews/detail")
 	public ResponseEntity<List<TravelVO>> searchTravel(@RequestBody TravelVO t) {
 		List<TravelVO> list = null;
 		try {
 			log.info("Start");
-			list = travelDao.searchTravel(t);
+			list = travelDao.searchDetailTravel(t);
 		} catch (Exception e) {
 			log.info("ERROR", e);
 			throw new RuntimeException(e);
@@ -85,7 +85,7 @@ public class TravelController {
 		try {
 			log.info("Start");
 			travel = travelDao.selectTravel(trvlId);
-			travelRevw = travelDao.selectTravelRevw(trvlId);
+			travelRevw = travelDao.selectAllTravelRevw(trvlId);
 			travel.setTrvVO(travelRevw);
 		} catch (Exception e) {
 			log.info("ERROR", e);
@@ -98,10 +98,16 @@ public class TravelController {
 	@ApiOperation(value="여행지 게시글 작성 API 입니다.")
 	@PostMapping(value="/travel/reviews")
 	public ResponseEntity<TravelVO> insertTravel(@RequestBody TravelVO t) {
+		int result = -1;
 		TravelVO travel = null;
+		
 		try {
 			log.info("Start");
-			travel = travelDao.insertTravel(t);
+			result = travelDao.insertTravel(t);
+			log.info("Success" + result);
+			if(result > 0) {
+				travel = travelDao.selectTravel(t.getTrvlId());
+			}
 		} catch (Exception e) {
 			log.info("ERROR", e);
 			throw new RuntimeException(e);
@@ -113,10 +119,14 @@ public class TravelController {
 	@ApiOperation(value="여행지 게시글 수정 API 입니다.")
 	@PutMapping(value="/travel/reviews/{trvlId}")
 	public ResponseEntity<TravelVO> updateTravel(@RequestBody TravelVO t) {
+		int result = -1;
 		TravelVO travel = null;
 		try {
 			log.info("Start");
-			travel = travelDao.updateTravel(t);
+			result = travelDao.updateTravel(t);
+			if(result > 0) {
+				travel = travelDao.selectTravel(t.getTrvlId());
+			}
 		} catch (Exception e) {
 			log.info("ERROR", e);
 			throw new RuntimeException(e);
@@ -136,17 +146,24 @@ public class TravelController {
 			log.info("ERROR", e);
 			throw new RuntimeException(e);
 		}
-		log.info("delete travel id ; " + result);
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		if(result > 0) {
+			log.info("delete travel id : " + trvlId);
+		}
+		log.info("delete travel id ; " + trvlId);
+		return new ResponseEntity<Integer>(trvlId, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value="여행지 후기 작성 API 입니다.")
 	@PostMapping(value="/travel/reviews/review-entry")
 	public ResponseEntity<TravelReviewVO> insertTravelRevw(@RequestBody TravelReviewVO tr) {
+		int result = -1;
 		TravelReviewVO travelRevw = null;
 		try {
 			log.info("Start");
-			travelRevw = travelDao.insertTravelRevw(tr);
+			result = travelDao.insertTravelRevw(tr);
+			if(result > 0) {
+				travelRevw = travelDao.selectTravelRevw(tr.getTrvlRevwId());
+			}
 		} catch (Exception e) {
 			log.info("ERROR", e);
 			throw new RuntimeException(e);
@@ -158,20 +175,24 @@ public class TravelController {
 	@ApiOperation(value="여행지 후기 수정 API 입니다.")
 	@PutMapping(value="/travel/reviews/review-entry/{trvlId}")
 	public ResponseEntity<TravelReviewVO> updateTravelRevw(@RequestBody TravelReviewVO tr) {
+		int result = -1;
 		TravelReviewVO travelRevw = null;
 		try {
 			log.info("Start");
-			travelRevw = travelDao.updateTravelRevw(tr);
+			result = travelDao.updateTravelRevw(tr);
+			if(result > 0) {
+				travelRevw = travelDao.selectTravelRevw(tr.getTrvlRevwId());
+			}
 		} catch (Exception e) {
 			log.info("ERROR", e);
 			throw new RuntimeException(e);
 		}
-		log.info("update travel review id : " + travelRevw.getTrvlId());
+		log.info("update travel review id : " + travelRevw.getTrvlRevwId());
 		return new ResponseEntity<TravelReviewVO>(travelRevw, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value="여행지 후기 삭제 API 입니다.")
-	@DeleteMapping(value="/travel/reviews/review-entry/{trvlId}")
+	@DeleteMapping(value="/travel/reviews/review-entry/{trvlRevwId}")
 	public ResponseEntity<Integer> deleteTravelRevw(@PathVariable int trvlRevwId) {
 		int result = -1;
 		try {
@@ -181,7 +202,9 @@ public class TravelController {
 			log.info("ERROR", e);
 			throw new RuntimeException(e);
 		}
-		log.info("delete travel review id ; " + result);
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		if(result > 0) {
+			log.info("delete travel review id : " + trvlRevwId);
+		}
+		return new ResponseEntity<Integer>(trvlRevwId, HttpStatus.OK);
 	}
 }
