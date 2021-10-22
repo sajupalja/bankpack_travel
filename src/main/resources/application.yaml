@@ -1,7 +1,7 @@
 server:  
   port: ${PORT:8080}
   servlet:
-    context-path: ${SERVLET_CONTEXT_PATH:/}
+    context-path: ${SERVLET_CONTEXT_PATH:/travel}
 
 spring: 
   application:
