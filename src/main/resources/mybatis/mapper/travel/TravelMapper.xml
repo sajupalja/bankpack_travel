@@ -298,4 +298,35 @@
 		delete from trvl_revw_info
 		where trvl_revw_id = #{trvlRevwId}
 	</delete>
+	
+	<select id="selectCountry" parameterType="com.demo.microservices.model.CountryVO" resultType="com.demo.microservices.model.CountryVO">
+		select city_id,
+		  (select city_name from city_info where city_id = #{cityId}) as city_name,
+          cntry_id, 
+          (select cntry_name from cntry_info where cntry_id = #{cntryId}) as cntry_name, 
+          avg(total_room_rate) as avgRoomRate,
+          avg(total_food_rate) as avgFoodRate,
+          avg(total_trff_rate) as avgTrffRate,
+          avg(total_act_rate) as avgActRate,
+          avg(total_etc_rate) as avgEtcRate,
+		  (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "1" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}) as avgRoomAmt,
+          (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "2" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}) as avgFoodAmt,
+          (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "3" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}) as avgTrffAmt,
+          (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "4" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}) as avgActAmt,
+          (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "5" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}) as avgEtcAmt
+		  ctstr_label
+		from trvl_info
+		where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId};
+	</select>
+	
+	<select id="selectCountry" parameterType="com.demo.microservices.model.CountryVO" resultType="com.demo.microservices.model.TravelVO">
+		select trvl_id,
+			   trvl_name,
+			   trvl_start_dt,
+		   	   trvl_end_dt,
+		   	   (select city_name from city_info where city_id=#{cityId}) as city_name,
+		   	   (select cntry_name from cntry_info where cntry_id=#{cntryId}) as cntry_name
+		from trvl_info
+		where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}
+	</select>
 </mapper>

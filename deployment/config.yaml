@@ -5,7 +5,7 @@ metadata:
 data:
   SERVLET_CONTEXT_PATH: "/travel"
 # MYSQL DB
-  DB_SERVER: mysql.mysql
+  DB_SERVER: mysql.sajupalja
   DB_PORT: "3306"
   DB_USERNAME: saju
   DB_PASSWORD: saju
