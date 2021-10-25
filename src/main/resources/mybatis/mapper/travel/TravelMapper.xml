@@ -129,6 +129,7 @@
 			   use_yn,
 			   budget_amt,
 			   total_room_rate,
+			   total_food_rate,
 			   total_trff_rate,
 			   total_act_rate,
 			   total_etc_rate,
@@ -352,7 +353,7 @@
 	          join city_info ct
 	          on ctr.cntry_id = ct.cntry_id) as tb1
 	    on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
-	    where user_id=1
+	    where user_id=#{userId}
 	    order by rnk asc, trvl_end_dt desc
 	</select>
 </mapper>
