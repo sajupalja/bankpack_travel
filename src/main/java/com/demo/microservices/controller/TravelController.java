@@ -231,4 +231,19 @@ public class TravelController {
 		
 		return new ResponseEntity<CountryVO>(country, HttpStatus.OK); 
 	}
+	
+	@ApiOperation(value="회원 id 검색 API입니다.")
+	@GetMapping(value="/reviews/user/{userId}")
+	public ResponseEntity<List<TravelVO>> searchMyReview(@PathVariable int userId) {
+		List<TravelVO> list = null;
+		
+		try {
+			log.info("Start");
+			list = travelDao.searchTravelByUserId(userId);
+		} catch (Exception e) {
+			log.info("ERROR", e);
+			throw new RuntimeException(e);
+		}
+		return new ResponseEntity<List<TravelVO>>(list, HttpStatus.OK);
+	}
 }
