@@ -316,10 +316,10 @@
           (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "5" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}) as avgEtcAmt
 		  ctstr_label
 		from trvl_info
-		where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId};
+		where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}
 	</select>
 	
-	<select id="selectCountry" parameterType="com.demo.microservices.model.CountryVO" resultType="com.demo.microservices.model.TravelVO">
+	<select id="selectTravelByClstr" parameterType="com.demo.microservices.model.CountryVO" resultType="com.demo.microservices.model.TravelVO">
 		select trvl_id,
 			   trvl_name,
 			   trvl_start_dt,

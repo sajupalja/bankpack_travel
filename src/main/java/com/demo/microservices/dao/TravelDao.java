@@ -40,5 +40,5 @@ public interface TravelDao {
 	
 	CountryVO selectCountry(CountryVO country); // 클러스터에 맞는 여행지 찾기
 	
-	List<TravelVO> selectTravel(CountryVO country); // 클러스터에 맞는 여행 후기 찾기
+	List<TravelVO> selectTravelByClstr(CountryVO country); // 클러스터에 맞는 여행 후기 찾기
 }
