@@ -35,8 +35,6 @@
 		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
 		join usr_info
 		on trvl_info.user_id = usr_info.user_id
-		order by trvl_id desc
-        limit 0, 5;
 	</select>
 	
 	<select id="searchTravel" parameterType= "string" resultType="com.demo.microservices.model.TravelVO">
@@ -334,25 +332,21 @@
 	
 	<select id="searchTravelByUserId" parameterType="Integer" resultType="com.demo.microservices.model.TravelVO">
 		select trvl_id,
-            tb1.city_name,
-            tb1.cntry_name,
-            trvl_start_dt,
-               trvl_end_dt,
-               img_url, 
-               total_pay_amt,
-               case when now() between trvl_start_dt and trvl_end_dt then 0
-               else 1
-               end as rnk
-	    from trvl_info
-	    join (select ctr.cntry_id, 
-	                 ctr.cntry_name, 
-	                 ct.city_id, 
-	                 ct.city_name
-	          from cntry_info ctr
-	          join city_info ct
-	          on ctr.cntry_id = ct.cntry_id) as tb1
-	    on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
-	    where user_id=1
-	    order by rnk asc, trvl_end_dt desc
+			   tb1.city_name,
+			   tb1.cntry_name,
+			   trvl_start_dt,
+		   	   trvl_end_dt,
+		   	   img_url, 
+		   	   total_pay_amt
+		from trvl_info
+		join (select ctr.cntry_id, 
+					 ctr.cntry_name, 
+					 ct.city_id, 
+					 ct.city_name
+				from cntry_info ctr
+				join city_info ct
+				on ctr.cntry_id = ct.cntry_id) as tb1
+		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
+		where user_id=#{userId}
 	</select>
 </mapper>
