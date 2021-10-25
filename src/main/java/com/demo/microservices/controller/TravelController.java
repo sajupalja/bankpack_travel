@@ -67,7 +67,7 @@ public class TravelController {
 	}
 	
 	@ApiOperation(value="여행지 상세 검색 API 입니다. 현재 사용X")
-	@GetMapping(value="/reviews/detail")
+	@PostMapping(value="/reviews/detail")
 	public ResponseEntity<List<TravelVO>> searchTravel(@RequestBody TravelVO t) {
 		List<TravelVO> list = null;
 		try {
@@ -213,7 +213,7 @@ public class TravelController {
 	}
 	
 	@ApiOperation(value="나라/도시 선택 API 입니다.")
-	@GetMapping(value="/destination")
+	@PostMapping(value="/destination")
 	public ResponseEntity<CountryVO> searchCnC(@RequestBody CountryVO cntry) {
 		CountryVO country = null;
 		List<TravelVO> travels = null;
