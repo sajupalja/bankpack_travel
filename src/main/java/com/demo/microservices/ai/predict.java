@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URL;
-
+import java.net.URL; 
+import org.json.simple.JSONObject;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.demo.microservices.dao.TravelDao;
@@ -16,50 +18,48 @@ public class predict {
 	@Autowired
 	TravelDao travelDao;
 	
-	public String predict(TravelSurveyVO vo) {
+	public String predict(TravelSurveyVO vo) throws IOException, ParseException {
 		int id = vo.getUserId();
 		int flag = travelDao.selectTravelRevwForId(id); 
 
 		if(flag!=0) { // user가 작성한 후기가 없을 때
 			String factor = vo.getTrvlMainFctr();
 			if(factor.equals("1")) {
-				vo.setTotalFoodRate(0.4f);
-				vo.setTotalRoomRate(0.15f);
-				vo.setTotalActRate(0.15f);
-				vo.setTotalTrffRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalFoodRate(0.4f);
+				vo.getTravelSurveyRateVO().setTotalRoomRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalActRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalTrffRate(0.15f);
 			}else if(factor.equals("2")) {
-				vo.setTotalRoomRate(0.4f);
-				vo.setTotalFoodRate(0.15f);
-				vo.setTotalActRate(0.15f);
-				vo.setTotalTrffRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalRoomRate(0.4f);
+				vo.getTravelSurveyRateVO().setTotalFoodRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalActRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalTrffRate(0.15f);
 			}else if(factor.equals("3")) {
-				vo.setTotalActRate(0.4f);
-				vo.setTotalFoodRate(0.15f);
-				vo.setTotalRoomRate(0.15f);
-				vo.setTotalTrffRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalActRate(0.4f);
+				vo.getTravelSurveyRateVO().setTotalFoodRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalRoomRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalTrffRate(0.15f);
 			}else { // factor == 4
-				vo.setTotalTrffRate(0.4f);
-				vo.setTotalFoodRate(0.15f);
-				vo.setTotalActRate(0.15f);
-				vo.setTotalRoomRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalTrffRate(0.4f);
+				vo.getTravelSurveyRateVO().setTotalFoodRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalActRate(0.15f);
+				vo.getTravelSurveyRateVO().setTotalRoomRate(0.15f);
 			}
 		}else { // user가 작성한 후기가 있을 때
-			
+			vo.setTravelSurveyRateVO(travelDao.selectAvgRate(flag));
 		}
-
-		
-		
-		return "";
+		// VO를 줘서 예측값 리턴하기
+		return predictCluster(vo);
 	}
 	
 	
 	// Cluster 값 돌려주는 예측 메소드
-	public String predictCluster(TravelSurveyVO vo) throws IOException {
+	public String predictCluster(TravelSurveyVO vo) throws IOException, ParseException {
         // NOTE: you must manually set API_KEY below using information retrieved from your IBM Cloud account.
 
         String API_KEY = "3qTd-4IHD1LJ2kvGPXG10-j3Ujr29eoq1DNnQxd8VkFm";
         String cluster = null;
-        
+
         HttpURLConnection tokenConnection = null;
         HttpURLConnection scoringConnection = null;
         BufferedReader tokenBuffer = null;
@@ -97,7 +97,18 @@ public class predict {
                     "\"input_data\": [\n" +
                     "{" +
                     "\"fields\": [\"cmpn_cnt\", \"trvl_pd\", \"total_pay_amt\", \"cmpn_type\", \"trvl_main_fctr\", \"total_room_rate\", \"total_food_rate\", \"total_trff_rate\", \"total_act_rate\", \"total_etc_rate\"]," +
-                    "\"values\": [[5, 8, 3432000, 1, 1, 0.36, 0.20, 0.36, 0.06, 0.02]]\n" +
+                    "\"values\": [[" + 
+                    vo.getCmpnCnt() +
+                     "," + vo.getTrvlPd() +
+                     "," + vo.getBudgetAmt() +
+                     "," + vo.getCmpnType() +
+                     "," + vo.getTrvlMainFctr() +
+                     "," + vo.getTravelSurveyRateVO().getTotalRoomRate() +
+                     "," + vo.getTravelSurveyRateVO().getTotalFoodRate() +
+                     "," + vo.getTravelSurveyRateVO().getTotalTrffRate() +
+                     "," + vo.getTravelSurveyRateVO().getTotalActRate() +
+                     "," + vo.getTravelSurveyRateVO().getTotalEtcRate() +
+                     "]]\n" +
                     "}" +
                     "]" +
                     "}";
@@ -110,8 +121,13 @@ public class predict {
             String lineScoring;
             while ((lineScoring = scoringBuffer.readLine()) != null) {
                 jsonStringScoring.append(lineScoring);
-            }
-            System.out.println(jsonStringScoring);
+        		JSONObject jsonVar2 = new JSONObject();
+        		JSONParser parser = new JSONParser(jsonStringScoring.toString());
+        		jsonVar2 = (JSONObject) parser.parse();
+        		cluster = (String) jsonVar2.get("values");
+            }	
+ //           System.out.println(jsonStringScoring);
+
         } catch (IOException e) {
             System.out.println("The URL is not valid.");
             System.out.println(e.getMessage());
@@ -130,7 +146,7 @@ public class predict {
                 scoringBuffer.close();
             }
         }
-		
+        
 		return cluster;
 	}
 	

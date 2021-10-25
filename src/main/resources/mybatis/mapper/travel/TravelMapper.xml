@@ -308,5 +308,13 @@
 		where userId = #{userId}
 	</select>
 	
+	<!-- userID가 작성한 후기가 있을 때, rate별 평균 값 제공  #지누무주-->
+	<select id="selectAvgRate" parameterType="Integer" resultType="com.demo.microservices.model.TravelSurveyRateVO">
+		select avg(totalRoomRate), avg(totalFoodRate), avg(totalTrffRate), avg(totalActRate), avg(totalEtcRate)
+		from trvl_info
+		where userId = #{userId}
+	</select>
+	
+	
 	
 </mapper>

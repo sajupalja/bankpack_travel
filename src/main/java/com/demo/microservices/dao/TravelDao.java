@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.demo.microservices.model.TravelReviewVO;
+import com.demo.microservices.model.TravelSurveyRateVO;
 import com.demo.microservices.model.TravelVO;
 
 @Mapper
@@ -36,6 +37,8 @@ public interface TravelDao {
 	
 	int deleteTravelRevw(int travelRevwID); // 여행후기 삭제
 	
-	int selectTravelRevwForId(int id); // 유저ID로 작성한 후기가 있는지 없는지 검색
+	int selectTravelRevwForId(int id); // 유저ID로 작성한 후기가 있는지 없는지 검색 #지누무주
+	
+	TravelSurveyRateVO selectAvgRate(int id); // 유저ID로 작성한 후기가 있다면 rate별 평균값 제공 #지누무주
 	
 }
