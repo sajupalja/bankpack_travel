@@ -18,40 +18,6 @@ public class Predict {
 	@Autowired
 	TravelDao travelDao;
 	
-	public String predict(TravelSurveyVO vo) throws IOException, ParseException {
-		int id = vo.getUserId();
-		int flag = travelDao.selectTravelRevwForId(id); 
-
-		if(flag!=0) { // user가 작성한 후기가 없을 때
-			String factor = vo.getTrvlMainFctr();
-			if(factor.equals("1")) {
-				vo.getTravelSurveyRateVO().setTotalFoodRate(0.4f);
-				vo.getTravelSurveyRateVO().setTotalRoomRate(0.15f);
-				vo.getTravelSurveyRateVO().setTotalActRate(0.15f);
-				vo.getTravelSurveyRateVO().setTotalTrffRate(0.15f);
-			}else if(factor.equals("2")) {
-				vo.getTravelSurveyRateVO().setTotalRoomRate(0.4f);
-				vo.getTravelSurveyRateVO().setTotalFoodRate(0.15f);
-				vo.getTravelSurveyRateVO().setTotalActRate(0.15f);
-				vo.getTravelSurveyRateVO().setTotalTrffRate(0.15f);
-			}else if(factor.equals("3")) {
-				vo.getTravelSurveyRateVO().setTotalActRate(0.4f);
-				vo.getTravelSurveyRateVO().setTotalFoodRate(0.15f);
-				vo.getTravelSurveyRateVO().setTotalRoomRate(0.15f);
-				vo.getTravelSurveyRateVO().setTotalTrffRate(0.15f);
-			}else { // factor == 4
-				vo.getTravelSurveyRateVO().setTotalTrffRate(0.4f);
-				vo.getTravelSurveyRateVO().setTotalFoodRate(0.15f);
-				vo.getTravelSurveyRateVO().setTotalActRate(0.15f);
-				vo.getTravelSurveyRateVO().setTotalRoomRate(0.15f);
-			}
-		}else { // user가 작성한 후기가 있을 때
-			vo.setTravelSurveyRateVO(travelDao.selectAvgRate(flag));
-		}
-		// VO를 줘서 예측값 리턴하기
-		return predictCluster(vo);
-	}
-	
 	
 	// Cluster 값 돌려주는 예측 메소드
 	public String predictCluster(TravelSurveyVO vo) throws IOException, ParseException {
@@ -126,7 +92,6 @@ public class Predict {
         		jsonVar2 = (JSONObject) parser.parse();
         		cluster = (String) jsonVar2.get("values");
             }	
- //           System.out.println(jsonStringScoring);
 
         } catch (IOException e) {
             System.out.println("The URL is not valid.");
