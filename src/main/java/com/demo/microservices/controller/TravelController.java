@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/travel")
 @CrossOrigin(origins = "*")
 public class TravelController {
 	@Autowired
