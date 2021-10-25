@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.demo.microservices.dao.TravelDao;
 import com.demo.microservices.model.TravelSurveyVO;
 
-public class predict {
+public class Predict {
 	@Autowired
 	TravelDao travelDao;
 	

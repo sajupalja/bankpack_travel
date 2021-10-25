@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.microservices.ai.Predict;
 import com.demo.microservices.dao.TravelRecommendDao;
 import com.demo.microservices.model.TravelSurveyRateVO;
 import com.demo.microservices.model.TravelSurveyResultVO;
@@ -29,6 +30,7 @@ public class TravelRecommendController {
 	@Autowired
 	TravelRecommendDao travelRecommendDao;
 	
+	Predict predict;
 	
 	@ApiOperation(value="여행지 설문을 기반으로 반환된 cluster값과 일치하는 여행지 목록")
 	@PostMapping(value="/recommend/result")
@@ -47,7 +49,7 @@ public class TravelRecommendController {
 			log.info("rate값 survey 데이터에 대입");
 			
 			log.info("여행지 설문을 기반으로 cluster 계산");
-			cluster = travelRecommendDao.getRecommendCluster(survey); //여행지 설문을 기반으로 cluster 계산
+			cluster = predict.predict(survey); //여행지 설문을 기반으로 cluster 계산
 			log.info("여행지 설문을 기반으로 cluster 계산한 값 :: "+cluster);
 			
 			list = travelRecommendDao.getRecommendResults(cluster); //cluster값과 일치하는 여행지 목록
