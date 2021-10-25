@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +31,7 @@ public class TravelRecommendController {
 	
 	
 	@ApiOperation(value="여행지 설문을 기반으로 반환된 cluster값과 일치하는 여행지 목록")
-	@GetMapping(value="/recommend/result")
+	@PostMapping(value="/recommend/result")
 	public ResponseEntity <List<TravelSurveyResultVO>> recommendWithSurvey(@RequestBody TravelSurveyVO survey){
 
 		List<TravelSurveyResultVO> list = null;
@@ -40,7 +40,7 @@ public class TravelRecommendController {
 		
 		try {
 			
-			rate = travelRecommendDao.getSurveyRate(survey.getUserId(), survey.getTrvlMainFctr());
+			rate = travelRecommendDao.getSurveyRate(survey);
 			log.info("설문 데이터와 유저 기존 데이터를 기반으로 rate값 계산");
 			
 			survey.setTravelSurveyRateVO(rate); //rate 데이터 만든거 서베이에 넣어서 넘김
@@ -59,6 +59,27 @@ public class TravelRecommendController {
 		}
 		
 		return new ResponseEntity<List<TravelSurveyResultVO>> (list, HttpStatus.OK);
+	}
+	
+	
+	@ApiOperation(value="RATE 테스트")
+	@PostMapping(value="/recommend/rate")
+	public ResponseEntity <TravelSurveyRateVO> aaaa(@RequestBody TravelSurveyVO survey){
+		
+		TravelSurveyRateVO rate = null;
+		
+		try {
+			
+			System.out.println(survey.toString());
+			rate = travelRecommendDao.getSurveyRate(survey);
+			System.out.println(rate.toString());
+		} catch (Exception e) {
+			
+			log.error("Error",e);
+			throw new RuntimeException(e);
+		}
+		
+		return new ResponseEntity<TravelSurveyRateVO> (rate, HttpStatus.OK);
 	}
 	
 	

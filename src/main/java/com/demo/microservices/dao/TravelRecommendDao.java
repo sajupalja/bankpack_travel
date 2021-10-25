@@ -16,5 +16,5 @@ public interface TravelRecommendDao {
 	
 	List<TravelSurveyResultVO> getRecommendResults(String cluster); //cluster값과 일치하는 여행지 목록
 
-	TravelSurveyRateVO getSurveyRate(int userId, String trvlMainFctr);
+	TravelSurveyRateVO getSurveyRate(TravelSurveyVO survey);
 }
