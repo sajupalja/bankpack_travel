@@ -213,7 +213,7 @@ public class TravelController {
 	}
 	
 	@ApiOperation(value="나라/도시 선택 API 입니다.")
-	@GetMapping(value="/pick-city")
+	@GetMapping(value="/destination")
 	public ResponseEntity<CountryVO> searchCnC(@RequestBody CountryVO cntry) {
 		CountryVO country = null;
 		List<TravelVO> travels = null;
@@ -221,7 +221,7 @@ public class TravelController {
 		try {
 			log.info("Start");
 			country = travelDao.selectCountry(cntry);
-			travels = travelDao.selectTravel(cntry);
+			travels = travelDao.selectTravelByClstr(cntry);
 			country.setTravels(travels);
 		} catch (Exception e) {
 			log.info("ERROR", e);
