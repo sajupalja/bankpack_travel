@@ -298,4 +298,15 @@
 		delete from trvl_revw_info
 		where trvl_revw_id = #{trvlRevwId}
 	</delete>
+	
+	
+	
+	<!-- userID가 작성한 후기가 있는지 검색, 있으면 trvlId 없으면 0  #지누무주-->
+	<select id="selectTravelRevwForId" parameterType="Integer" resultType="_int">
+		select ifnull(trvlId,0)
+		from trvl_info
+		where userId = #{userId}
+	</select>
+	
+	
 </mapper>

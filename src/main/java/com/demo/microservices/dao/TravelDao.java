@@ -35,4 +35,7 @@ public interface TravelDao {
 	int updateTravelRevw(TravelReviewVO travelRevws); // 여행후기 수정 
 	
 	int deleteTravelRevw(int travelRevwID); // 여행후기 삭제
+	
+	int selectTravelRevwForId(int id); // 유저ID로 작성한 후기가 있는지 없는지 검색
+	
 }
