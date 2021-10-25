@@ -329,4 +329,24 @@
 		from trvl_info
 		where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}
 	</select>
+	
+	<select id="searchTravelByUserId" parameterType="Integer" resultType="com.demo.microservices.model.TravelVO">
+		select trvl_id,
+			   tb1.city_name,
+			   tb1.cntry_name,
+			   trvl_start_dt,
+		   	   trvl_end_dt,
+		   	   img_url, 
+		   	   total_pay_amt
+		from trvl_info
+		join (select ctr.cntry_id, 
+					 ctr.cntry_name, 
+					 ct.city_id, 
+					 ct.city_name
+				from cntry_info ctr
+				join city_info ct
+				on ctr.cntry_id = ct.cntry_id) as tb1
+		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
+		where user_id=#{userId}
+	</select>
 </mapper>
