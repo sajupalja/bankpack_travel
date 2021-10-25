@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.demo.microservices.model.TravelSurveyRateVO;
 import com.demo.microservices.model.TravelSurveyResultVO;
 import com.demo.microservices.model.TravelSurveyVO;
 
@@ -15,4 +16,5 @@ public interface TravelRecommendDao {
 	
 	List<TravelSurveyResultVO> getRecommendResults(String cluster); //cluster값과 일치하는 여행지 목록
 
+	TravelSurveyRateVO getSurveyRate(int userId, String trvlMainFctr);
 }

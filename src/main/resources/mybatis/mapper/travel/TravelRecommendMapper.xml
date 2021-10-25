@@ -15,5 +15,16 @@
    </select>
 
 
+   <!-- 설문 데이터와 유저 기존 데이터를 기반으로 rate값 계산  -->
+   <select id="getSurveyRate" parameterType="String" resultType="com.demo.microservices.model.TravelSurveyRateVO">
+
+		call proc_set_survey_value(#{userId}, #{trvlMainFctr}, @room_rate, @food_rate, @trff_rate, @act_rate, @etc_rate);
+		
+		select @room_rate, @food_rate, @trff_rate, @act_rate, @etc_rate;
+		
+   </select>
+
+
+
 
 </mapper>
