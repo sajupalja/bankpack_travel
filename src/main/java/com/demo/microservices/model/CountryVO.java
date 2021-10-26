@@ -14,6 +14,7 @@ public class CountryVO {
 	private String cntryName;
 	private String cntryEngName;
 	private int cityId;
+	private String imgUrl;
 	private String cityName;
 	private String cityEngName;
 	private List<TravelVO> travels;
