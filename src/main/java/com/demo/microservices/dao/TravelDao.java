@@ -45,4 +45,4 @@ public interface TravelDao {
 	List<TravelVO> selectTravelByClstr(CountryVO country); // 클러스터에 맞는 여행 후기 찾기
 	
 	List<TravelVO> searchTravelByUserId(int userId); // 해당 유저의 후기
-
+}
