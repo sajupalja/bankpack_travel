@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.demo.microservices.model.CountryVO;
 import com.demo.microservices.model.TravelReviewVO;
+import com.demo.microservices.model.TravelSurveyRateVO;
 import com.demo.microservices.model.TravelVO;
 
 @Mapper
@@ -38,9 +39,10 @@ public interface TravelDao {
 	
 	int deleteTravelRevw(int travelRevwID); // 여행후기 삭제
 	
+
 	CountryVO selectCountry(CountryVO country); // 클러스터에 맞는 여행지 찾기
 	
 	List<TravelVO> selectTravelByClstr(CountryVO country); // 클러스터에 맞는 여행 후기 찾기
 	
 	List<TravelVO> searchTravelByUserId(int userId); // 해당 유저의 후기
-}
+
