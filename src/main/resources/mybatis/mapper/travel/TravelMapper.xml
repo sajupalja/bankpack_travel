@@ -308,16 +308,17 @@
 		  (select city_name from city_info where city_id = #{cityId}) as city_name,
           cntry_id, 
           (select cntry_name from cntry_info where cntry_id = #{cntryId}) as cntry_name, 
+          round(avg(ti.total_pay_amt) * avg(total_room_rate),0) + round(avg(ti.total_pay_amt) * avg(total_food_rate),0) + round(avg(ti.total_pay_amt) * avg(total_trff_rate),0) + round(avg(ti.total_pay_amt) * avg(total_act_rate),0) + round(avg(ti.total_pay_amt) * avg(total_etc_rate),0) as avgTotalPayAmt,
           avg(total_room_rate) as avgRoomRate,
           avg(total_food_rate) as avgFoodRate,
           avg(total_trff_rate) as avgTrffRate,
           avg(total_act_rate) as avgActRate,
           avg(total_etc_rate) as avgEtcRate,
-		  (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "1" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId})) as avgRoomAmt,
-          (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "2" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId})) as avgFoodAmt,
-          (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "3" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId})) as avgTrffAmt,
-          (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "4" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId})) as avgActAmt,
-          (select ifnull(avg(pay_amt), 0) from trvl_pay_info where pay_type = "5" and trvl_id in (select trvl_id from trvl_info where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId})) as avgEtcAmt,
+          round(avg(ti.total_pay_amt) * avg(total_room_rate),0) as avgRoomAmt,
+          round(avg(ti.total_pay_amt) * avg(total_food_rate),0) as avgFoodAmt,
+          round(avg(ti.total_pay_amt) * avg(total_trff_rate),0) as avgTrffAmt,
+          round(avg(ti.total_pay_amt) * avg(total_act_rate),0) as avgActAmt,
+          round(avg(ti.total_pay_amt) * avg(total_etc_rate),0) as avgEtcAmt,
 		  clstr_label
 		from trvl_info
 		where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}
