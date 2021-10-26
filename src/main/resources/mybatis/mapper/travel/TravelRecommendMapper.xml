@@ -7,11 +7,15 @@
 
 		select ti.cntry_id
 			 , ti.city_id
+			 , (select cntry_name from cntry_info where cntry_id = ti.cntry_id) as cntry_name
+			 , (select city_name from city_info where city_id = ti.city_id) as city_name
 			 , count(1) as cnt
+			 , #{cluster} as clstr_label
 		  from trvl_info ti
 		 where ti.clstr_label = #{cluster}
 	  group by ti.cntry_id, ti.city_id
 	  order by cnt desc
+	     limit 0, 3
    </select>
 
 
