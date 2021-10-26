@@ -17,4 +17,5 @@ public class TravelSurveyResultVO {
 	private String cityName; // 도시이름
 	private int cnt; // 클러스터에 해당하는 동일 도시 갯수
 	private int clstrLabel; // 클러스터 라벨
+	private String imgUrl; // 썸네일 이미지 url
 }

@@ -30,12 +30,6 @@ public class TravelController {
 	@Autowired
 	TravelDao travelDao;
 	
-	@ApiOperation(value="여행지 추천 API 입니다.")
-	@GetMapping(value="/recommendation")
-	public ResponseEntity<List<TravelVO>> travelRecomm(TravelVO t) {
-		return null;
-	}
-	
 	@ApiOperation(value="여행지 후기 전체 검색 API 입니다.")
 	@GetMapping(value="/reviews")
 	public ResponseEntity<List<TravelVO>> searchAllTravel() {
