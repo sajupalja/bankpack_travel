@@ -11,6 +11,7 @@
 			 , (select city_name from city_info where city_id = ti.city_id) as city_name
 			 , count(1) as cnt
 			 , #{cluster} as clstr_label
+			 , (select img_url from city_info where city_id = ti.city_id) as img_url
 		  from trvl_info ti
 		 where ti.clstr_label = #{cluster}
 	  group by ti.cntry_id, ti.city_id
