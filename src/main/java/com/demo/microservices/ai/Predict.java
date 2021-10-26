@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URL; 
+import java.net.URL;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.apache.tomcat.util.json.JSONParser;
+import org.json.simple.parser.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,9 +20,24 @@ public class Predict {
 	@Autowired
 	TravelDao travelDao;
 	
+	public String jsonParser(String jsonString) throws org.json.simple.parser.ParseException {
+		
+		JSONParser jsonParser = new JSONParser();
+		Object obj = jsonParser.parse(jsonString);
+		JSONObject jsonObj = (JSONObject) obj;
+		
+		JSONArray  jsonObj2 = (JSONArray )jsonObj.get("predictions");
+		JSONObject values2 = (JSONObject) jsonObj2.get(0);
+		
+		JSONArray values3 = (JSONArray) values2.get("values");
+		JSONArray result = (JSONArray)values3.get(0);
+		Long resultVal = (Long) result.get(0);
+		
+		return resultVal.toString();
+	}
 	
 	// Cluster 값 돌려주는 예측 메소드
-	public String predictCluster(TravelSurveyVO vo) throws IOException, ParseException {
+	public String predictCluster(TravelSurveyVO vo) throws IOException, ParseException, org.json.simple.parser.ParseException {
         // NOTE: you must manually set API_KEY below using information retrieved from your IBM Cloud account.
 
         String API_KEY = "3qTd-4IHD1LJ2kvGPXG10-j3Ujr29eoq1DNnQxd8VkFm";
@@ -78,6 +95,7 @@ public class Predict {
                     "}" +
                     "]" +
                     "}";
+            System.out.println(payload);
             writer.write(payload);
             writer.close();
 
@@ -85,14 +103,13 @@ public class Predict {
             scoringBuffer = new BufferedReader(new InputStreamReader(scoringConnection.getInputStream()));
             StringBuffer jsonStringScoring = new StringBuffer();
             String lineScoring;
+            
             while ((lineScoring = scoringBuffer.readLine()) != null) {
                 jsonStringScoring.append(lineScoring);
-        		JSONObject jsonVar2 = new JSONObject();
-        		JSONParser parser = new JSONParser(jsonStringScoring.toString());
-        		jsonVar2 = (JSONObject) parser.parse();
-        		cluster = (String) jsonVar2.get("values");
+                
             }	
-
+            System.out.println(jsonStringScoring.toString());
+            cluster = jsonParser(jsonStringScoring.toString());
         } catch (IOException e) {
             System.out.println("The URL is not valid.");
             System.out.println(e.getMessage());
