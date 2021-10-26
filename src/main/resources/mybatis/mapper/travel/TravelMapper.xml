@@ -155,7 +155,7 @@
 		where trvl_id = #{trvlId}
 	</select>
 	
-	<insert id="insertTravel" parameterType="com.demo.microservices.model.TravelVO">
+	<insert id="insertTravel" parameterType="com.demo.microservices.model.RequestTravelVO">
 		insert into trvl_info(
 		   trvl_name,
 		   trvl_start_dt,
@@ -173,6 +173,7 @@
 		   user_id,
 		   budget_amt, 
 		   total_room_rate,
+		   total_food_rate,
 		   total_trff_rate, 
 		   total_act_rate, 
 		   total_etc_rate,
@@ -196,21 +197,22 @@
 		   #{useYn}, 
 		   #{userId},
 		   #{budgetAmt}, 
-		   #{totalRoomRate},
-		   #{totalTrffRate}, 
-		   #{totalActRate}, 
-		   #{totalEtcRate},
-		   #{inputId},
-		   #{inputDt},
-		   #{modifyId},
-		   #{modifyDt}
+		   0,
+		   0, 
+		   0, 
+		   0,
+		   0,
+		   #{userId},
+		   now(),
+		   #{userId},
+		   now()
 		)
-		<selectKey keyProperty="trvlId" resultType="Integer" order="AFTER">
-        	SELECT LAST_INSERT_ID()
+		<selectKey keyProperty="trvlId" resultType="_int" order="AFTER">
+        	SELECT LAST_INSERT_ID() as trvlId
     	</selectKey>
 	</insert>
 	
-	<update id="updateTravel" parameterType="com.demo.microservices.model.TravelVO">
+	<update id="updateTravel" parameterType="com.demo.microservices.model.RequestTravelVO">
 		update trvl_info 
 		set trvl_name = #{trvlName},
 		   trvl_start_dt = #{trvlStartDt},
@@ -224,8 +226,8 @@
 		   trvl_main_fctr = #{trvlMainFctr}, 
 		   use_yn = #{useYn}, 
 		   budget_amt = #{budgetAmt}, 
-		   modify_id = #{modifyId},
-		   modify_dt = #{modifyDt}
+		   modify_id = #{userId},
+		   modify_dt = now()
 		where trvl_id = #{trvlId}
 	</update>
 	
@@ -259,41 +261,41 @@
 		where trvl_revw_id = #{trvlRevwId}  
 	</select>
 	
-	<insert id="insertTravelRevw" parameterType="com.demo.microservices.model.TravelReviewVO" >
+	<insert id="insertTravelRevw" parameterType="com.demo.microservices.model.RequestTravelReviewVO" >
 		insert into trvl_revw_info(
 			trvl_id,
 		 	write_date, 
 		 	revw_text,
-			revw_order,
 			trvl_dt,
+			img_url,
 			input_id, 
 			input_dt,
 			modify_id,
 			modify_dt
 		) values (
 			#{trvlId},
-		 	#{writeDate}, 
+		 	now(), 
 		 	#{revwText},
-			#{revwOrder},
 			#{trvlDt},
-			#{inputId}, 
-			#{inputDt},
-			#{modifyId},
-			#{modifyDt}
+			#{imgUrl},
+			#{userId}, 
+			now(),
+			#{userId},
+			now()
 		)
 		<selectKey keyProperty="trvlRevwId" resultType="Integer" order="AFTER">
         	SELECT LAST_INSERT_ID()
     	</selectKey>
 	</insert>
 	
-	<update id="updateTravelRevw" parameterType="com.demo.microservices.model.TravelReviewVO">
+	<update id="updateTravelRevw" parameterType="com.demo.microservices.model.RequestTravelReviewVO">
 		update trvl_revw_info 
-		set write_date = #{writeDate}, 
+		set write_date = now(), 
 		 	revw_text = #{revwText},
-			revw_order = #{revwOrder},
 			trvl_dt = #{trvlDt},
-			modify_id = #{modifyId},
-			modify_dt = #{modifyDt}
+			img_url = #{imgUrl},
+			modify_id = #{userId},
+			modify_dt = now()
 		where trvl_revw_id = #{trvlRevwId} and trvl_id = #{trvlId}
 	</update>
 	
@@ -303,7 +305,7 @@
 	</delete>
 	
 
-	<select id="selectCountry" parameterType="com.demo.microservices.model.CountryVO" resultType="com.demo.microservices.model.CountryVO">
+	<select id="selectCountry" parameterType="com.demo.microservices.model.RequestCountryVO" resultType="com.demo.microservices.model.CountryVO">
 		select city_id,
 		  (select city_name from city_info where city_id = #{cityId}) as city_name,
 		  (select img_url from city_info where city_id = #{cityId}) as img_url,
@@ -325,7 +327,7 @@
 		where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}
 	</select>
 	
-	<select id="selectTravelByClstr" parameterType="com.demo.microservices.model.CountryVO" resultType="com.demo.microservices.model.TravelVO">
+	<select id="selectTravelByClstr" parameterType="com.demo.microservices.model.RequestCountryVO" resultType="com.demo.microservices.model.TravelVO">
 		select trvl_id,
 			   trvl_name,
 			   trvl_start_dt,
