@@ -302,6 +302,7 @@
 		where trvl_revw_id = #{trvlRevwId}
 	</delete>
 	
+
 	<select id="selectCountry" parameterType="com.demo.microservices.model.CountryVO" resultType="com.demo.microservices.model.CountryVO">
 		select city_id,
 		  (select city_name from city_info where city_id = #{cityId}) as city_name,
