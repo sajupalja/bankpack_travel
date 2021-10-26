@@ -328,7 +328,9 @@
 			   trvl_start_dt,
 		   	   trvl_end_dt,
 		   	   (select city_name from city_info where city_id=#{cityId}) as city_name,
-		   	   (select cntry_name from cntry_info where cntry_id=#{cntryId}) as cntry_name
+		   	   (select cntry_name from cntry_info where cntry_id=#{cntryId}) as cntry_name,
+		   	   cmpn_type,
+		   	   cmpn_cnt
 		from trvl_info
 		where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}
 	</select>
