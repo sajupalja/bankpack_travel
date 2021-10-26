@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.demo.microservices.model.CountryVO;
+import com.demo.microservices.model.RequestCountryVO;
+import com.demo.microservices.model.RequestTravelReviewVO;
+import com.demo.microservices.model.RequestTravelVO;
 import com.demo.microservices.model.TravelReviewVO;
 import com.demo.microservices.model.TravelSurveyRateVO;
 import com.demo.microservices.model.TravelVO;
@@ -23,9 +26,9 @@ public interface TravelDao {
 	
 	TravelVO selectTravel(int travelID); // 여행게시글 선택 
 	
-	int insertTravel(TravelVO travel); // 여행게시글 작성 
+	int insertTravel(RequestTravelVO travel); // 여행게시글 작성 
 	
-	int updateTravel(TravelVO travel); // 여행게시글 수정 
+	int updateTravel(RequestTravelVO travel); // 여행게시글 수정 
 	
 	int deleteTravel(int travelID); // 여행게시글 삭제
 	
@@ -33,16 +36,16 @@ public interface TravelDao {
 	
 	TravelReviewVO selectTravelRevw(int travelRevwID); // 여행후기 선택 
 	
-	int insertTravelRevw(TravelReviewVO travelRevw); // 여행후기 작성 
+	int insertTravelRevw(RequestTravelReviewVO travelRevw); // 여행후기 작성 
 	
-	int updateTravelRevw(TravelReviewVO travelRevws); // 여행후기 수정 
+	int updateTravelRevw(RequestTravelReviewVO travelRevws); // 여행후기 수정 
 	
 	int deleteTravelRevw(int travelRevwID); // 여행후기 삭제
 	
 
-	CountryVO selectCountry(CountryVO country); // 클러스터에 맞는 여행지 찾기
+	CountryVO selectCountry(RequestCountryVO country); // 클러스터에 맞는 여행지 찾기
 	
-	List<TravelVO> selectTravelByClstr(CountryVO country); // 클러스터에 맞는 여행 후기 찾기
+	List<TravelVO> selectTravelByClstr(RequestCountryVO country); // 클러스터에 맞는 여행 후기 찾기
 	
 	List<TravelVO> searchTravelByUserId(int userId); // 해당 유저의 후기
 }

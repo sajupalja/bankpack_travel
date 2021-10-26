@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.microservices.dao.TravelDao;
 import com.demo.microservices.model.CountryVO;
+import com.demo.microservices.model.RequestCountryVO;
+import com.demo.microservices.model.RequestTravelReviewVO;
+import com.demo.microservices.model.RequestTravelVO;
 import com.demo.microservices.model.TravelReviewVO;
 import com.demo.microservices.model.TravelVO;
 
@@ -95,7 +98,7 @@ public class TravelController {
 	
 	@ApiOperation(value="여행지 게시글 작성 API 입니다.")
 	@PostMapping(value="/reviews")
-	public ResponseEntity<TravelVO> insertTravel(@RequestBody TravelVO t) {
+	public ResponseEntity<TravelVO> insertTravel(@RequestBody RequestTravelVO t) {
 		int result = -1;
 		TravelVO travel = null;
 		
@@ -116,7 +119,7 @@ public class TravelController {
 	
 	@ApiOperation(value="여행지 게시글 수정 API 입니다.")
 	@PutMapping(value="/reviews/{trvlId}")
-	public ResponseEntity<TravelVO> updateTravel(@RequestBody TravelVO t) {
+	public ResponseEntity<TravelVO> updateTravel(@RequestBody RequestTravelVO t) {
 		int result = -1;
 		TravelVO travel = null;
 		try {
@@ -153,7 +156,7 @@ public class TravelController {
 	
 	@ApiOperation(value="여행지 후기 작성 API 입니다.")
 	@PostMapping(value="/reviews/review-entry")
-	public ResponseEntity<TravelReviewVO> insertTravelRevw(@RequestBody TravelReviewVO tr) {
+	public ResponseEntity<TravelReviewVO> insertTravelRevw(@RequestBody RequestTravelReviewVO tr) {
 		int result = -1;
 		TravelReviewVO travelRevw = null;
 		try {
@@ -172,7 +175,7 @@ public class TravelController {
 	
 	@ApiOperation(value="여행지 후기 수정 API 입니다.")
 	@PutMapping(value="/reviews/review-entry/{trvlId}")
-	public ResponseEntity<TravelReviewVO> updateTravelRevw(@RequestBody TravelReviewVO tr) {
+	public ResponseEntity<TravelReviewVO> updateTravelRevw(@RequestBody RequestTravelReviewVO tr) {
 		int result = -1;
 		TravelReviewVO travelRevw = null;
 		try {
@@ -208,7 +211,7 @@ public class TravelController {
 	
 	@ApiOperation(value="나라/도시 선택 API 입니다.")
 	@PostMapping(value="/destination")
-	public ResponseEntity<CountryVO> searchCnC(@RequestBody CountryVO cntry) {
+	public ResponseEntity<CountryVO> searchCnC(@RequestBody RequestCountryVO cntry) {
 		CountryVO country = null;
 		List<TravelVO> travels = null;
 		
