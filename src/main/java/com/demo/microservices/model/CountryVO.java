@@ -17,6 +17,7 @@ public class CountryVO {
 	private String cityName;
 	private String cityEngName;
 	private List<TravelVO> travels;
+	private long avgTotalPayAmt;
 	private long avgRoomAmt;
 	private long avgFoodAmt;
 	private long avgTrffAmt;
