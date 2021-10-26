@@ -46,3 +46,4 @@ public interface TravelDao {
 	
 	List<TravelVO> searchTravelByUserId(int userId); // 해당 유저의 후기
 
+}
