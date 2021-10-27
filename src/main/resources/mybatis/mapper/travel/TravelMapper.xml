@@ -74,6 +74,8 @@
 		join usr_info
 		on trvl_info.user_id = usr_info.user_id
 		where trvl_name like concat('%', #{keyword}, '%')
+		   or tb1.cntry_name like concat('%', #{keyword}, '%')
+		   or tb1.city_name like concat('%', #{keyword}, '%')
 	</select>
 	
 	<select id="searchDetailTravel" parameterType= "com.demo.microservices.model.TravelVO" resultType="com.demo.microservices.model.TravelVO">
