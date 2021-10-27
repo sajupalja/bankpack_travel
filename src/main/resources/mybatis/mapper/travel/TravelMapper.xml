@@ -245,9 +245,11 @@
 			   write_date, 
 			   revw_text,
 			   revw_order,
-			   trvl_dt
+			   trvl_dt,
+			   img_url
 		from trvl_revw_info
 		where trvl_id = #{trvlId}
+		order by trvl_dt
 	</select>
 	
 	<select id="selectTravelRevw" parameterType="Integer" resultType="com.demo.microservices.model.TravelReviewVO">
@@ -256,9 +258,10 @@
 			   write_date, 
 			   revw_text,
 			   revw_order,
-			   trvl_dt
+			   trvl_dt,
+			   img_url
 		from trvl_revw_info
-		where trvl_revw_id = #{trvlRevwId}  
+		where trvl_revw_id = #{trvlRevwId}
 	</select>
 	
 	<insert id="insertTravelRevw" parameterType="com.demo.microservices.model.RequestTravelReviewVO" >
