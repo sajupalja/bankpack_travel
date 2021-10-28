@@ -45,9 +45,7 @@
 		(
 		 select trvl_id, img_url
 		   from trvl_revw_info
-		  where img_url is not null
-		  order by trvl_revw_id
-		  limit 0, 1
+		  where (trvl_id, trvl_revw_id) in (select trvl_id, min(trvl_revw_id) from trvl_revw_info where img_url is not null group by trvl_id)
 		) rv
 		on rv.trvl_id = trvl_info.trvl_id
 		order by trvl_id desc
@@ -98,9 +96,7 @@
 		(
 		 select trvl_id, img_url
 		   from trvl_revw_info
-		  where img_url is not null
-		  order by trvl_revw_id
-		  limit 0, 1
+		  where (trvl_id, trvl_revw_id) in (select trvl_id, min(trvl_revw_id) from trvl_revw_info where img_url is not null group by trvl_id)
 		) rv
 		on rv.trvl_id = trvl_info.trvl_id
 		where trvl_name like concat('%', #{keyword}, '%')
@@ -152,9 +148,7 @@
 		(
 		 select trvl_id, img_url
 		   from trvl_revw_info
-		  where img_url is not null
-		  order by trvl_revw_id
-		  limit 0, 1
+		  where (trvl_id, trvl_revw_id) in (select trvl_id, min(trvl_revw_id) from trvl_revw_info where img_url is not null group by trvl_id)
 		) rv
 		on rv.trvl_id = trvl_info.trvl_id
 	</select>
@@ -209,9 +203,7 @@
 		(
 		 select trvl_id, img_url
 		   from trvl_revw_info
-		  where img_url is not null
-		  order by trvl_revw_id
-		  limit 0, 1
+		  where (trvl_id, trvl_revw_id) in (select trvl_id, min(trvl_revw_id) from trvl_revw_info where img_url is not null group by trvl_id)
 		) rv
 		on rv.trvl_id = trvl_info.trvl_id
 		where trvl_info.trvl_id = #{trvlId}
@@ -436,9 +428,7 @@
 		(
 		 select trvl_id, img_url
 		   from trvl_revw_info
-		  where img_url is not null
-		  order by trvl_revw_id
-		  limit 0, 1
+		  where (trvl_id, trvl_revw_id) in (select trvl_id, min(trvl_revw_id) from trvl_revw_info where img_url is not null group by trvl_id)
 		) rv
 		on rv.trvl_id = trvl_info.trvl_id
 	    where user_id=#{userId}
