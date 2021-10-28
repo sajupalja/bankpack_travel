@@ -102,6 +102,7 @@
 		where trvl_name like concat('%', #{keyword}, '%')
 		   or tb1.cntry_name like concat('%', #{keyword}, '%')
 		   or tb1.city_name like concat('%', #{keyword}, '%')
+		order by trvl_info.trvl_id desc
 	</select>
 	
 	<select id="searchDetailTravel" parameterType= "com.demo.microservices.model.TravelVO" resultType="com.demo.microservices.model.TravelVO">
