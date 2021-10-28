@@ -40,9 +40,5 @@ public class TravelVO {
 	private long totalTrffPrice; // 총 교통 금액 
 	private long totalActPrice; // 총 엑티비티 금액
 	private long totalEtcPrice; // 총 기타 금액
-	private int inputId; // 작성자 
-	private Date inputDt; // 최초 작성일자
-	private int modifyId; // 수정자 
-	private Date modifyDt; // 수정일자 
 	private List<TravelReviewVO> trvVO; // 해당 여행 후기글
 }
