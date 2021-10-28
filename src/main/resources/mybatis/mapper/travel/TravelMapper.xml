@@ -2,13 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.microservices.dao.TravelDao">
 	<select id="searchAllTravel" resultType="com.demo.microservices.model.TravelVO">
-		select trvl_id,
+		select trvl_info.trvl_id,
 			   trvl_name, 
 			   trvl_start_dt, 
 			   trvl_end_dt, 
 			   tb1.cntry_id,
 			   tb1.city_id,
-			   img_url, 
+			   case 
+			      when rv.img_url is not null and rv.img_url != "" then rv.img_url
+			      when trvl_info.img_url is not null and trvl_info.img_url != "" then trvl_info.img_url
+			      when tb1.img_url is not null and tb1.img_url != "" then tb1.img_url
+			      else "https://mykskhomes.com/assets/css/restaurant/images/default.png"
+			   end as img_url,
 			   cmpn_cnt, 
 			   trvl_pd, 
 			   total_pay_amt, 
@@ -28,25 +33,40 @@
 		join (select ctr.cntry_id, 
 					 ctr.cntry_name, 
 					 ct.city_id, 
-					 ct.city_name
+					 ct.city_name,
+					 ct.img_url
 				from cntry_info ctr
 				join city_info ct
 				on ctr.cntry_id = ct.cntry_id) as tb1
 		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
 		join usr_info
 		on trvl_info.user_id = usr_info.user_id
+		left outer join
+		(
+		 select trvl_id, img_url
+		   from trvl_revw_info
+		  where img_url is not null
+		  order by trvl_revw_id
+		  limit 0, 1
+		) rv
+		on rv.trvl_id = trvl_info.trvl_id
 		order by trvl_id desc
         limit 0, 5;
 	</select>
 	
 	<select id="searchTravel" parameterType= "string" resultType="com.demo.microservices.model.TravelVO">
-		select trvl_id,
+		select trvl_info.trvl_id,
 			   trvl_name, 
 			   trvl_start_dt, 
 			   trvl_end_dt, 
 			   tb1.cntry_id,
 			   tb1.city_id,
-			   img_url, 
+			   case 
+			      when rv.img_url is not null and rv.img_url != "" then rv.img_url
+			      when trvl_info.img_url is not null and trvl_info.img_url != "" then trvl_info.img_url
+			      when tb1.img_url is not null and tb1.img_url != "" then tb1.img_url
+			      else "https://mykskhomes.com/assets/css/restaurant/images/default.png"
+			   end as img_url,
 			   cmpn_cnt, 
 			   trvl_pd, 
 			   total_pay_amt, 
@@ -66,26 +86,41 @@
 		join (select ctr.cntry_id, 
 					 ctr.cntry_name, 
 					 ct.city_id, 
-					 ct.city_name
+					 ct.city_name,
+					 ct.img_url
 				from cntry_info ctr
 				join city_info ct
 				on ctr.cntry_id = ct.cntry_id) as tb1
 		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
 		join usr_info
 		on trvl_info.user_id = usr_info.user_id
+		left outer join
+		(
+		 select trvl_id, img_url
+		   from trvl_revw_info
+		  where img_url is not null
+		  order by trvl_revw_id
+		  limit 0, 1
+		) rv
+		on rv.trvl_id = trvl_info.trvl_id
 		where trvl_name like concat('%', #{keyword}, '%')
 		   or tb1.cntry_name like concat('%', #{keyword}, '%')
 		   or tb1.city_name like concat('%', #{keyword}, '%')
 	</select>
 	
 	<select id="searchDetailTravel" parameterType= "com.demo.microservices.model.TravelVO" resultType="com.demo.microservices.model.TravelVO">
-		select trvl_id,
+		select trvl_info.trvl_id,
 			   trvl_name, 
 			   trvl_start_dt, 
 			   trvl_end_dt,
 			   tb1.cntry_id,
 			   tb1.city_id, 
-			   img_url, 
+			   case 
+			      when rv.img_url is not null and rv.img_url != "" then rv.img_url
+			      when trvl_info.img_url is not null and trvl_info.img_url != "" then trvl_info.img_url
+			      when tb1.img_url is not null and tb1.img_url != "" then tb1.img_url
+			      else "https://mykskhomes.com/assets/css/restaurant/images/default.png"
+			   end as img_url,
 			   cmpn_cnt, 
 			   trvl_pd, 
 			   total_pay_amt, 
@@ -105,23 +140,38 @@
 		join (select ctr.cntry_id, 
 					 ctr.cntry_name, 
 					 ct.city_id, 
-					 ct.city_name
+					 ct.city_name,
+					 ct.img_url
 				from cntry_info ctr
 				join city_info ct
 				on ctr.cntry_id = ct.cntry_id) as tb1
 		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
 		join usr_info
 		on trvl_info.user_id = usr_info.user_id	  
+		left outer join
+		(
+		 select trvl_id, img_url
+		   from trvl_revw_info
+		  where img_url is not null
+		  order by trvl_revw_id
+		  limit 0, 1
+		) rv
+		on rv.trvl_id = trvl_info.trvl_id
 	</select>
 	
 	<select id="selectTravel" parameterType= "Integer" resultType="com.demo.microservices.model.TravelVO"> 
-		select trvl_id,
+		select trvl_info.trvl_id,
 			   trvl_name,
 			   trvl_start_dt,
 			   trvl_end_dt,
 			   tb1.cntry_id,
 			   tb1.city_id,
-			   img_url,
+			   case 
+			      when rv.img_url is not null and rv.img_url != "" then rv.img_url
+			      when trvl_info.img_url is not null and trvl_info.img_url != "" then trvl_info.img_url
+			      when tb1.img_url is not null and tb1.img_url != "" then tb1.img_url
+			      else "https://mykskhomes.com/assets/css/restaurant/images/default.png"
+			   end as img_url,
 			   cmpn_cnt,
 			   trvl_pd,
 			   total_pay_amt,
@@ -147,14 +197,24 @@
 		join (select ctr.cntry_id, 
 					 ctr.cntry_name, 
 					 ct.city_id, 
-					 ct.city_name
+					 ct.city_name,
+					 ct.img_url
 				from cntry_info ctr
 				join city_info ct
 				on ctr.cntry_id = ct.cntry_id) as tb1
 		on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
 		join usr_info
 		on trvl_info.user_id = usr_info.user_id
-		where trvl_id = #{trvlId}
+		left outer join
+		(
+		 select trvl_id, img_url
+		   from trvl_revw_info
+		  where img_url is not null
+		  order by trvl_revw_id
+		  limit 0, 1
+		) rv
+		on rv.trvl_id = trvl_info.trvl_id
+		where trvl_info.trvl_id = #{trvlId}
 	</select>
 	
 	<insert id="insertTravel" parameterType="com.demo.microservices.model.TravelVO">
@@ -342,12 +402,17 @@
 	</select>
 	
 	<select id="searchTravelByUserId" parameterType="Integer" resultType="com.demo.microservices.model.TravelVO">
-		select trvl_id,
+		select trvl_info.trvl_id,
             tb1.city_name,
             tb1.cntry_name,
             trvl_start_dt,
                trvl_end_dt,
-               img_url, 
+			   case 
+			      when rv.img_url is not null and rv.img_url != "" then rv.img_url
+			      when trvl_info.img_url is not null and trvl_info.img_url != "" then trvl_info.img_url
+			      when tb1.img_url is not null and tb1.img_url != "" then tb1.img_url
+			      else "https://mykskhomes.com/assets/css/restaurant/images/default.png"
+			   end as img_url,
                total_pay_amt,
                case when now() between trvl_start_dt and trvl_end_dt then 0
                else 1
@@ -356,11 +421,21 @@
 	    join (select ctr.cntry_id, 
 	                 ctr.cntry_name, 
 	                 ct.city_id, 
-	                 ct.city_name
+	                 ct.city_name,
+	                 ct.img_url
 	          from cntry_info ctr
 	          join city_info ct
 	          on ctr.cntry_id = ct.cntry_id) as tb1
 	    on trvl_info.cntry_id = tb1.cntry_id and trvl_info.city_id = tb1.city_id
+		left outer join
+		(
+		 select trvl_id, img_url
+		   from trvl_revw_info
+		  where img_url is not null
+		  order by trvl_revw_id
+		  limit 0, 1
+		) rv
+		on rv.trvl_id = trvl_info.trvl_id
 	    where user_id=#{userId}
 	    order by rnk asc, trvl_end_dt desc
 	</select>
