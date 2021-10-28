@@ -393,7 +393,8 @@
 		   	   (select img_url from city_info where city_id=#{cityId}) as img_url,
 		   	   (select cntry_name from cntry_info where cntry_id=#{cntryId}) as cntry_name,
 		   	   cmpn_type,
-		   	   cmpn_cnt
+		   	   cmpn_cnt,
+		   	   (select user_name from usr_info where usr_info.user_id = trvl_info.user_id)as user_name
 		from trvl_info
 		where clstr_label=#{clstrLabel} and cntry_id=#{cntryId} and city_id=#{cityId}
 	</select>
